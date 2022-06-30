@@ -1,0 +1,9 @@
+name: FTSPest
+version: 1.1
+main: de.afgmedia.ftspest.main.FTSPest
+author: halberfan für FTSCraft
+
+api-version: 1.16
+
+commands:
+  pest:
