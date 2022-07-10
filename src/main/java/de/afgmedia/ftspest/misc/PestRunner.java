@@ -35,18 +35,17 @@ public class PestRunner implements Runnable {
             for (PestUser user : this.plugin.getInfectionManager().getUsers().values()) {
                 if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE) {
                     user.addSicknessLevel();
+                    this.sicknessLevel = 0;
                 }
                 if (this.positionCheck >= SECONDS_TILL_POSITION_CHECK) {
                     this.plugin.getInfectionManager().handleEvent(InfectionType.BIOME, user.getPlayer(), user.getPlayer().getLocation());
+                    this.positionCheck = 0;
                 }
                 if (this.symptomApply >= SECONDS_TILL_SYMPTOMS_APPLY) {
                     user.applySymptoms();
+                    this.symptomApply = 0;
                 }
             }
-
-        this.sicknessLevel = 0;
-        this.positionCheck = 0;
-        this.symptomApply = 0;
 
     }
 }
