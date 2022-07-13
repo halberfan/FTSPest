@@ -1,5 +1,2 @@
-# IDE Folders
-.idea/
-
-# Build files
-target/
+# Project exclude paths
+/target/

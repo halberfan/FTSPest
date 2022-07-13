@@ -26,7 +26,6 @@ public class DeathListener implements Listener {
             return;
         }
 
-        u.cure(true);
         u.resetImmunity();
 
     }
