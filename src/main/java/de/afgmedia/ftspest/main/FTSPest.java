@@ -1,6 +1,7 @@
 package de.afgmedia.ftspest.main;
 
 import de.afgmedia.ftspest.diseases.cmds.CMDpest;
+import de.afgmedia.ftspest.diseases.cmds.CMDpestadmin;
 import de.afgmedia.ftspest.events.*;
 import de.afgmedia.ftspest.misc.InfectionManager;
 import de.afgmedia.ftspest.misc.PestIO;
@@ -29,6 +30,7 @@ public class FTSPest extends JavaPlugin {
         new InteractListener(this);
 
         new CMDpest(this);
+        new CMDpestadmin(this);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) this, (Runnable) new PestRunner(this), 20L, 20L);
 
