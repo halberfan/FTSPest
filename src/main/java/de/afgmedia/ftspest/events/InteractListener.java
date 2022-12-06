@@ -2,19 +2,19 @@ package de.afgmedia.ftspest.events;
 
 import de.afgmedia.ftspest.diseases.Cure;
 import de.afgmedia.ftspest.main.FTSPest;
+import de.afgmedia.ftspest.misc.Values;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 public class InteractListener implements Listener {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public InteractListener(FTSPest plugin) {
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, (Plugin) plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
@@ -27,7 +27,7 @@ public class InteractListener implements Listener {
             for (Cure cure : this.plugin.getInfectionManager().getCures()) {
                 if (cure.getCureItem().isSimilar(is))
                     if (cure.cure(event.getPlayer())) {
-                        event.getPlayer().sendMessage("§7[§bFTS-Pest§7] Du wurdest geheilt!");
+                        event.getPlayer().sendMessage(Values.MESSAGE_HEALED);
                         event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
                     }
             }

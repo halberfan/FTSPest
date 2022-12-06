@@ -5,6 +5,7 @@ import de.afgmedia.ftspest.main.FTSPest;
 import de.afgmedia.ftspest.misc.PestUser;
 import de.afgmedia.ftspest.misc.Values;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CMDpestadmin implements CommandExecutor {
 
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public CMDpestadmin(FTSPest plugin) {
         this.plugin = plugin;
@@ -66,7 +67,7 @@ public class CMDpestadmin implements CommandExecutor {
                 PestUser tUser = plugin.getInfectionManager().getUser(target);
                 tUser.infectWith(targetDisease);
                 target.sendMessage(Values.PREFIX+"Ein Teamler hat dich angehustet!");
-                cs.sendMessage(Values.PREFIX+"Du hast erfolgreich §c" + target.getName() + " §7mit §c" + targetDisease.getName() + " §7infiziert!");
+                cs.sendMessage(Values.PREFIX+"Du hast erfolgreich " + ChatColor.RED + target.getName() + ChatColor.GRAY +" mit " + ChatColor.RED + targetDisease.getName() + ChatColor.GRAY +" infiziert!");
 
             }
         }
@@ -75,7 +76,7 @@ public class CMDpestadmin implements CommandExecutor {
     }
 
     private String help() {
-        return "§7/pestadmin heal [Spieler] - Heilt einen Spieler\n" +
-                "§7/pestadmin infect [Spieler] [Krankheit] - Infiziert einen Spieler mit einer Krankheit";
+        return ChatColor.GRAY + "/pestadmin heal [Spieler] - Heilt einen Spieler\n" +
+                ChatColor.GRAY + "/pestadmin infect [Spieler] [Krankheit] - Infiziert einen Spieler mit einer Krankheit";
     }
 }
