@@ -3,10 +3,10 @@ package de.afgmedia.ftspest.events;
 import de.afgmedia.ftspest.diseases.Cure;
 import de.afgmedia.ftspest.diseases.infections.InfectionType;
 import de.afgmedia.ftspest.main.FTSPest;
+import de.afgmedia.ftspest.misc.Values;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.plugin.Plugin;
 
 public class PlayerItemConsumeListener implements Listener {
     private final FTSPest plugin;
@@ -21,11 +21,11 @@ public class PlayerItemConsumeListener implements Listener {
         for (Cure cure : this.plugin.getInfectionManager().getCures()) {
             if (cure.getCureItem().isSimilar(event.getItem())) {
                 if (cure.cure(event.getPlayer())) {
-                    event.getPlayer().sendMessage("§7[§bFTS-Pest§7] Du wurdest geheilt!");
+                    event.getPlayer().sendMessage(Values.MESSAGE_HEALED);
                     return;
                 }
                 event.setCancelled(true);
-                event.getPlayer().sendMessage("§7[§bFTS-Pest§7] Du legst die Medizin wieder weg als du bemerkst dass es nicht die ist, die du brauchst");
+                event.getPlayer().sendMessage( Values.PREFIX + "Du legst die Medizin wieder weg als du bemerkst dass es nicht die ist, die du brauchst");
                 return;
             }
         }

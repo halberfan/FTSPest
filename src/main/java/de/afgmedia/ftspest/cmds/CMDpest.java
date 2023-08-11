@@ -4,6 +4,7 @@ import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.main.FTSPest;
 import de.afgmedia.ftspest.misc.PestUser;
 import de.afgmedia.ftspest.misc.Values;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CMDpest implements CommandExecutor, TabCompleter {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     ArrayList<String> arguments;
     ArrayList<String> diseases;
@@ -74,64 +75,64 @@ public class CMDpest implements CommandExecutor, TabCompleter {
             return;
         }
 
-        p.sendMessage(Values.PREFIX + "Informationen zu §e" + disease.getName() + "§7:");
-        p.sendMessage(Values.PREFIX + "Beschreibung: §e" + disease.getDescription());
-        p.sendMessage(Values.PREFIX + "Medizin: §e" + disease.getCure().getName()
+        p.sendMessage(Values.PREFIX + "Informationen zu " + ChatColor.YELLOW + disease.getName() + ChatColor.GRAY + ":");
+        p.sendMessage(Values.PREFIX + "Beschreibung: " + ChatColor.YELLOW + disease.getDescription());
+        p.sendMessage(Values.PREFIX + "Medizin: " + ChatColor.YELLOW + disease.getCure().getName()
                 .replace("ue", "ü")
                 .replace("ss", "ß")
                 .replace("ae", "ä")
                 .replace("oe", "ö")
                 .replace("_", " "));
-        p.sendMessage(Values.PREFIX + "Symptome: §e" + disease.getDebuff().toLowerCase().replace("_", " "));
+        p.sendMessage(Values.PREFIX + "Symptome: " + ChatColor.YELLOW + disease.getDebuff().toLowerCase().replace("_", " "));
 
     }
 
     private void sendDiseaseList(Player p) {
 
-        p.sendMessage("§e----------------------------");
-        p.sendMessage("§eEs gibt folgende Krankheiten: ");
+        p.sendMessage(ChatColor.YELLOW + "---------------------------");
+        p.sendMessage(ChatColor.YELLOW + "Es gibt folgende Krankheiten: ");
         p.sendMessage(" ");
 
         for (Disease disease : plugin.getInfectionManager().getDiseases().values()) {
-            p.sendMessage("§e - " + disease.getName());
+            p.sendMessage(ChatColor.YELLOW + disease.getName());
         }
 
         p.sendMessage(" ");
-        p.sendMessage("§eFür weitere Infos zu einer gewissen Krankheit gebe §o/pest info [Krankheit] §r§eein!");
-        p.sendMessage("§e----------------------------");
+        p.sendMessage(ChatColor.YELLOW + "Für weitere Infos zu einer gewissen Krankheit gebe" + ChatColor.ITALIC + "/pest info [Krankheit]" + ChatColor.YELLOW + "in!");
+        p.sendMessage(ChatColor.YELLOW + "---------------------------");
 
     }
 
     private void sendFormattedDiseaseOverview(Player p, PestUser user) {
-        p.sendMessage("§e----------------------------");
-        p.sendMessage("§eKrankheit: §b" + user.getDiseaseName());
-        p.sendMessage("§eFortschritt: §b" + user.getSicknessLevel());
+        p.sendMessage(ChatColor.YELLOW + "---------------------------");
+        p.sendMessage(ChatColor.YELLOW + "Krankheit: " + ChatColor.BOLD + ChatColor.AQUA + user.getDiseaseName());
+        p.sendMessage(ChatColor.YELLOW + "Fortschritt: " + ChatColor.BOLD + ChatColor.AQUA + user.getSicknessLevel());
         if (user.isInfected())
-            p.sendMessage("§eMedizin: §b" + user.getDisease().getCure().getName()
+            p.sendMessage(ChatColor.YELLOW + "Medizin: " + ChatColor.BOLD + ChatColor.AQUA + user.getDisease().getCure().getName()
                     .replace("ue", "ü")
                     .replace("ss", "ß")
                     .replace("ae", "ä")
                     .replace("oe", "ö")
                     .replace("_", " "));
-        p.sendMessage("§e----------------------------");
+        p.sendMessage(ChatColor.YELLOW + "---------------------------");
     }
 
     private void sendFormattedImmunityOverview(Player p, PestUser user) {
 
-        p.sendMessage("§e----------------------------");
+        p.sendMessage(ChatColor.YELLOW + "---------------------------");
 
-        p.sendMessage("§6Deine Immunitäten:");
+        p.sendMessage(ChatColor.GOLD + "Deine Immunitäten:");
 
         for (Disease disease : user.getImmunity().keySet()) {
             int percentage = (int) (user.getImmunity().get(disease) * 100);
             if (percentage == 80) {
-                p.sendMessage("§e" + disease.getName() + ": §b" + percentage + "% (MAX)");
+                p.sendMessage("" + ChatColor.YELLOW + disease.getName() + ": " + ChatColor.BOLD + ChatColor.AQUA + percentage + "% (MAX)");
                 continue;
             }
-            p.sendMessage("§e" + disease.getName() + ": §b" + percentage + "%");
+            p.sendMessage(ChatColor.YELLOW + disease.getName() + ": " + ChatColor.BOLD + ChatColor.AQUA + percentage + "%");
         }
 
-        p.sendMessage("§e----------------------------");
+        p.sendMessage(ChatColor.YELLOW + "---------------------------");
 
     }
 
