@@ -9,11 +9,11 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.plugin.Plugin;
 
 public class PlayerItemConsumeListener implements Listener {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public PlayerItemConsumeListener(FTSPest plugin) {
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, (Plugin) plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

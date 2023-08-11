@@ -3,12 +3,14 @@ package de.afgmedia.ftspest.misc;
 import de.afgmedia.ftspest.diseases.infections.InfectionType;
 import de.afgmedia.ftspest.main.FTSPest;
 
+import java.util.Iterator;
+
 public class PestRunner implements Runnable {
     private FTSPest plugin;
 
-    private static final int SECONDS_TILL_SICKNESS_LEVEL_RISE = 60;
+    private static final int SECONDS_TILL_SICKNESS_LEVEL_RISE = 90;
 
-    private static final int SECONDS_TILL_POSITION_CHECK = 130;
+    private static final int SECONDS_TILL_POSITION_CHECK = 180;
 
     private static final int SECONDS_TILL_SYMPTOMS_APPLY = 10;
 
@@ -31,21 +33,30 @@ public class PestRunner implements Runnable {
         this.sicknessLevel++;
         this.positionCheck++;
         this.symptomApply++;
-        if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE || this.positionCheck >= SECONDS_TILL_POSITION_CHECK || this.symptomApply >= SECONDS_TILL_SYMPTOMS_APPLY)
-            for (PestUser user : this.plugin.getInfectionManager().getUsers().values()) {
+        if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE || this.positionCheck >= SECONDS_TILL_POSITION_CHECK || this.symptomApply >= SECONDS_TILL_SYMPTOMS_APPLY) {
+            Iterator<PestUser> pestUserIterator = this.plugin.getInfectionManager().getUsers().values().iterator();
+            while (pestUserIterator.hasNext()) {
+                PestUser user = pestUserIterator.next();
                 if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE) {
                     user.addSicknessLevel();
-                    this.sicknessLevel = 0;
+                    if(!pestUserIterator.hasNext()) {
+                        sicknessLevel = 0;
+                    }
                 }
                 if (this.positionCheck >= SECONDS_TILL_POSITION_CHECK) {
                     this.plugin.getInfectionManager().handleEvent(InfectionType.BIOME, user.getPlayer(), user.getPlayer().getLocation());
-                    this.positionCheck = 0;
+                    if(!pestUserIterator.hasNext()) {
+                        positionCheck = 0;
+                    }
                 }
                 if (this.symptomApply >= SECONDS_TILL_SYMPTOMS_APPLY) {
                     user.applySymptoms();
-                    this.symptomApply = 0;
+                    if(!pestUserIterator.hasNext()) {
+                        symptomApply = 0;
+                    }
                 }
             }
+        }
 
     }
 }

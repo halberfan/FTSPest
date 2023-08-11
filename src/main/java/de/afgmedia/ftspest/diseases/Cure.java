@@ -13,15 +13,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 public class Cure {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     private ItemStack cureItem;
 
-    private String name;
+    private final String name;
 
-    private String description;
+    private final String description;
 
-    private Disease disease;
+    private final Disease disease;
 
     public Cure(FTSPest plugin, String name, String description, Disease disease) {
         this.plugin = plugin;

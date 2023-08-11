@@ -1,6 +1,7 @@
 package de.afgmedia.ftspest.misc;
 
 import de.afgmedia.ftspest.diseases.Disease;
+import de.afgmedia.ftspest.diseases.infections.InfectionType;
 import de.afgmedia.ftspest.main.FTSPest;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -61,20 +62,21 @@ public class PestUser {
 
     public void applySymptoms() {
         if (this.sicknessLevel >= 20 && this.sicknessLevel <= 50) {
-            if (Math.random() >= 0.9D)
+            if (Math.random() >= 0.925d)
                 if (this.disease.getLightSymptoms().equalsIgnoreCase("sweat")) {
                     Symptoms.sweat(this.player);
                 } else if (this.disease.getLightSymptoms().equalsIgnoreCase("cough")) {
                     Symptoms.cough(this.player);
+                } else if (this.disease.getLightSymptoms().equalsIgnoreCase("sneeze")) {
+                    Symptoms.sneeze(this.player);
                 }
         } else if (this.sicknessLevel >= 51 && this.sicknessLevel <= 90) {
-            if (Math.random() >= 0.0D)
-                if (this.sicknessLevel > 75) {
-                    Symptoms.applyEffect(this.player, PotionEffectType.getByName(this.disease.getDebuff()), 1);
-                } else {
-                    Symptoms.applyEffect(this.player, PotionEffectType.getByName(this.disease.getDebuff()), 0);
-                }
-        } else if (this.sicknessLevel > 90 && Math.random() >= 0.2D) {
+            if (this.sicknessLevel > 75) {
+                Symptoms.applyEffect(this.player, PotionEffectType.getByName(this.disease.getDebuff()), 1);
+            } else {
+                Symptoms.applyEffect(this.player, PotionEffectType.getByName(this.disease.getDebuff()), 0);
+            }
+        } else if (this.sicknessLevel > 90 && Math.random() >= 0.2D && this.player.getHealth() > 3) {
             Symptoms.damage(this.player, Integer.parseInt(this.disease.getLethal()));
         }
     }
@@ -87,23 +89,19 @@ public class PestUser {
 
         double immunity = getImmunity().get(disease);
         double immunityPercentage = 0;
-        if(sicknessLevel < 20) {
+        if (sicknessLevel < 20) {
             immunityPercentage = immunity + 0.03;
-        } else if(sicknessLevel < 50) {
+        } else if (sicknessLevel < 50) {
             immunityPercentage = immunity + 0.05;
-        } else if(sicknessLevel < 75) {
+        } else if (sicknessLevel < 75) {
             immunityPercentage = immunity + 0.06;
-        } else if(sicknessLevel < 90) {
+        } else if (sicknessLevel < 90) {
             immunityPercentage = immunity + 0.08;
-        } else if(sicknessLevel < 101) {
+        } else if (sicknessLevel < 101) {
             immunityPercentage = immunity + 0.1;
         }
 
-        if(immunityPercentage > 0.8) {
-            immunityPercentage = 0.8;
-        }
-
-        this.immunity.put(disease, immunityPercentage);
+        addImmunity(disease, immunityPercentage);
 
         this.disease = null;
         this.sicknessLevel = 0;
@@ -111,7 +109,7 @@ public class PestUser {
 
     public void cure(boolean override) {
 
-        if(override) {
+        if (override) {
             this.disease = null;
             this.sicknessLevel = 0;
         } else {
@@ -134,8 +132,12 @@ public class PestUser {
         return "Keine";
     }
 
-    public void addImmunity(Disease disease, double percentage) {
-        this.immunity.put(disease, percentage);
+    public void addImmunity(Disease disease, double immunityPercentage) {
+
+        if (immunityPercentage > 0.8)
+            immunityPercentage = 0.8;
+
+        this.immunity.put(disease, immunityPercentage);
     }
 
     public HashMap<Disease, Double> getImmunity() {
@@ -148,6 +150,12 @@ public class PestUser {
             immunity.put(value, 0d);
         }
 
+    }
+
+    public void reduceSicknessLevel() {
+        if (sicknessLevel >= 90) {
+            sicknessLevel = 60;
+        }
     }
 }
 
