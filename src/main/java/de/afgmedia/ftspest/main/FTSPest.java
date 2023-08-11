@@ -1,14 +1,13 @@
 package de.afgmedia.ftspest.main;
 
-import de.afgmedia.ftspest.diseases.cmds.CMDpest;
-import de.afgmedia.ftspest.diseases.cmds.CMDpestadmin;
+import de.afgmedia.ftspest.cmds.CMDpest;
+import de.afgmedia.ftspest.cmds.CMDpestadmin;
 import de.afgmedia.ftspest.events.*;
 import de.afgmedia.ftspest.misc.InfectionManager;
 import de.afgmedia.ftspest.misc.PestIO;
 import de.afgmedia.ftspest.misc.PestRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class FTSPest extends JavaPlugin {
@@ -32,7 +31,7 @@ public class FTSPest extends JavaPlugin {
         new CMDpest(this);
         new CMDpestadmin(this);
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin) this, (Runnable) new PestRunner(this), 20L, 20L);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new PestRunner(this), 20L, 20L);
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers())
             this.pestIO.loadPlayerData(onlinePlayer);
@@ -41,6 +40,7 @@ public class FTSPest extends JavaPlugin {
 
     public void onDisable() {
         this.pestIO.saveAllPlayerData();
+        this.pestIO.saveCauldrons();
     }
 
     public InfectionManager getInfectionManager() {

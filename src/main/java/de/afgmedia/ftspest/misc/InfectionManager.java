@@ -5,13 +5,15 @@ import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.diseases.infections.Infection;
 import de.afgmedia.ftspest.diseases.infections.InfectionType;
 import de.afgmedia.ftspest.main.FTSPest;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Statistic;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-
-import org.bukkit.Statistic;
-import org.bukkit.entity.Player;
 
 public class InfectionManager {
     private FTSPest plugin;
@@ -24,22 +26,34 @@ public class InfectionManager {
 
     private HashMap<Player, PestUser> users;
 
+    private LinkedList<Location> cauldrons;
+
+    private static boolean loseImmunities = true;
+
     public InfectionManager(FTSPest plugin) {
         this.plugin = plugin;
         this.infections = new HashMap<InfectionType, List<Infection>>();
         this.cures = new ArrayList<Cure>();
         this.diseases = new HashMap<String, Disease>();
         this.users = new HashMap<Player, PestUser>();
+        this.cauldrons = new LinkedList<>();
+    }
+
+    public boolean addCauldron(Location location) {
+
+        if (location.getBlock().getType() == Material.CAULDRON) {
+            cauldrons.add(location);
+            return true;
+        }
+
+        return false;
     }
 
     public void handleEvent(InfectionType infectionType, Player p, Object obj) {
 
-        double ticks = p.getStatistic(Statistic.PLAY_ONE_MINUTE);
-        double seconds = ticks / 20;
-        double minutes = seconds / 60;
-        double hours = minutes / 60;
-        
-        if(hours < 50) {
+        double hours = p.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000d;
+
+        if (hours < 50) {
             return;
         }
 
@@ -81,7 +95,7 @@ public class InfectionManager {
 
     public Disease getDisease(String diseaseString) {
         for (Disease value : diseases.values()) {
-            if(value.getName().equalsIgnoreCase(diseaseString))
+            if (value.getName().equalsIgnoreCase(diseaseString))
                 return value;
         }
         return null;
@@ -93,6 +107,19 @@ public class InfectionManager {
 
     public PestUser getUser(Player p) {
         return this.users.get(p);
+    }
+
+    public LinkedList<Location> getCauldrons() {
+        return cauldrons;
+    }
+
+    public static boolean toggleLosingImmunities() {
+        loseImmunities = !loseImmunities;
+        return loseImmunities;
+    }
+
+    public static boolean loosingImmunities() {
+        return loseImmunities;
     }
 }
 

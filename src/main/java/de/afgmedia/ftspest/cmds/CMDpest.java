@@ -1,4 +1,4 @@
-package de.afgmedia.ftspest.diseases.cmds;
+package de.afgmedia.ftspest.cmds;
 
 import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.main.FTSPest;

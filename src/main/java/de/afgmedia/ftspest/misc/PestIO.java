@@ -14,12 +14,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.yaml.snakeyaml.Yaml;
 
 public class PestIO {
     private FTSPest plugin;
@@ -31,7 +35,9 @@ public class PestIO {
         this.diseasesFolder = new File(plugin.getDataFolder() + "//diseases//");
         if (!this.diseasesFolder.exists())
             this.diseasesFolder.mkdirs();
+
         loadDiseases();
+        loadCauldrons();
     }
 
     public void loadDiseases() {
@@ -100,6 +106,43 @@ public class PestIO {
         }
     }
 
+    public void saveCauldrons() {
+
+        File cauldronFile = new File(plugin.getDataFolder() + "//cauldrons.yml");
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(cauldronFile);
+
+        for (int i = 0; i < plugin.getInfectionManager().getCauldrons().size(); i++) {
+            configuration.set(i + ".x", plugin.getInfectionManager().getCauldrons().get(i).getX());
+            configuration.set(i + ".y", plugin.getInfectionManager().getCauldrons().get(i).getY());
+            configuration.set(i + ".z", plugin.getInfectionManager().getCauldrons().get(i).getZ());
+            configuration.set(i + ".world", plugin.getInfectionManager().getCauldrons().get(i).getWorld().getName());
+        }
+
+    }
+
+    public void loadCauldrons() {
+
+        File cauldronFile = new File(plugin.getDataFolder() + "//cauldrons.yml");
+
+        if(!cauldronFile.exists())
+            cauldronFile.mkdirs();
+
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(cauldronFile);
+
+        for (String key : configuration.getConfigurationSection("").getKeys(false)) {
+
+            int x = configuration.getInt(key + ".x");
+            int y = configuration.getInt(key + ".y");
+            int z = configuration.getInt(key + ".z");
+            World world = Bukkit.getWorld(configuration.getString(key + ".world"));
+
+            Location loc = new Location(world, x, y, z);
+            plugin.getInfectionManager().addCauldron(loc);
+
+        }
+
+    }
+
     public void savePlayerData(PestUser user) {
         String disease, uuid = user.getPlayer().getUniqueId().toString();
         int sicknessLevel = user.getSicknessLevel();
@@ -115,7 +158,7 @@ public class PestIO {
         yamlConfiguration.set("uuid", uuid);
 
         for (Disease immunityDisease : user.getImmunity().keySet()) {
-            yamlConfiguration.set("immunity."+immunityDisease.getName(), user.getImmunity().get(immunityDisease));
+            yamlConfiguration.set("immunity." + immunityDisease.getName(), user.getImmunity().get(immunityDisease));
         }
 
         try {
@@ -139,12 +182,12 @@ public class PestIO {
         Disease disease = this.plugin.getInfectionManager().getDisease(diseaseString);
         PestUser user = new PestUser(this.plugin, player, disease, sicknessLevel);
 
-        if(yamlConfiguration.contains("immunity")) {
+        if (yamlConfiguration.contains("immunity")) {
             for (String diseaseImmunity : yamlConfiguration.getConfigurationSection("immunity").getKeys(false)) {
                 Disease iDisease = this.plugin.getInfectionManager().getDisease(diseaseImmunity);
-                double percentage = yamlConfiguration.getDouble("immunity."+diseaseImmunity);
+                double percentage = yamlConfiguration.getDouble("immunity." + diseaseImmunity);
 
-                if(iDisease != null) {
+                if (iDisease != null) {
                     user.addImmunity(iDisease, percentage);
                 }
 

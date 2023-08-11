@@ -1,6 +1,7 @@
 package de.afgmedia.ftspest.events;
 
 import de.afgmedia.ftspest.main.FTSPest;
+import de.afgmedia.ftspest.misc.InfectionManager;
 import de.afgmedia.ftspest.misc.PestUser;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,11 +23,14 @@ public class DeathListener implements Listener {
         Player p = event.getEntity();
         PestUser u = plugin.getInfectionManager().getUser(p);
 
-        if(u == null) {
+        if (u == null) {
             return;
         }
 
-        u.resetImmunity();
+        u.reduceSicknessLevel();
+
+        if (InfectionManager.loosingImmunities())
+            u.resetImmunity();
 
     }
 
