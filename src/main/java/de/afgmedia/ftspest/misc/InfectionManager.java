@@ -121,5 +121,9 @@ public class InfectionManager {
     public static boolean loosingImmunities() {
         return loseImmunities;
     }
+
+    public static void setLoseImmunities(boolean loseImmunities) {
+        InfectionManager.loseImmunities = loseImmunities;
+    }
 }
 
