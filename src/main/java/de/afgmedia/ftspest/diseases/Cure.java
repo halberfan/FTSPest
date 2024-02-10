@@ -5,6 +5,7 @@ import de.afgmedia.ftspest.misc.PestUser;
 
 import java.util.Arrays;
 
+import de.ftscraft.ftsutils.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -37,8 +38,8 @@ public class Cure {
         Recipe finalRecipe = null;
         if (s[0].equalsIgnoreCase("s")) {
             if (s.length == 10) {
-                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey((Plugin) this.plugin, "FTSPEST-" + this.name.toUpperCase().replace("§", "")), this.cureItem);
-                recipe.shape(new String[]{"ABC", "DEF", "GHI"});
+                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(this.plugin, "FTSPEST-" + this.name.toUpperCase().replace("§", "")), this.cureItem);
+                recipe.shape("ABC", "DEF", "GHI");
                 recipe.setIngredient('A', Material.getMaterial(s[1]));
                 recipe.setIngredient('B', Material.getMaterial(s[2]));
                 recipe.setIngredient('C', Material.getMaterial(s[3]));
@@ -51,7 +52,7 @@ public class Cure {
                 finalRecipe = recipe;
             }
         } else if (s[0].equalsIgnoreCase("u")) {
-            ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey((Plugin) this.plugin, "FTSPEST-" + this.name.toUpperCase().replace("§", "")), this.cureItem);
+            ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(this.plugin, "FTSPEST-" + this.name.toUpperCase().replace("§", "")), this.cureItem);
             for (int i = 0; i < s.length; i++) {
                 if (i != 0)
                     recipe.addIngredient(Material.getMaterial(s[i]));
@@ -59,7 +60,7 @@ public class Cure {
             finalRecipe = recipe;
         }
 
-        if (finalRecipe != null && this.plugin.getServer().getRecipe(new NamespacedKey((Plugin) this.plugin, "FTSPEST-" + this.name.toUpperCase().replace("§", ""))) == null)
+        if (finalRecipe != null && this.plugin.getServer().getRecipe(new NamespacedKey(this.plugin, "FTSPEST-" + this.name.toUpperCase().replace("§", ""))) == null)
             this.plugin.getServer().addRecipe(finalRecipe);
 
     }
@@ -92,13 +93,11 @@ public class Cure {
     }
 
     public void createItem(String cureItemName, String cureItemLore, Material mat) {
-        this.cureItem = new ItemStack(mat);
-        ItemMeta meta = this.cureItem.getItemMeta();
-        meta.setLore(Arrays.asList(cureItemLore.split("&n")));
-        meta.setDisplayName(cureItemName);
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-
-        this.cureItem.setItemMeta(meta);
+        this.cureItem = new ItemBuilder(mat)
+                .lore(cureItemLore.split("&n"))
+                .name(cureItemName)
+                .sign("FTSPEST-"+name.toUpperCase())
+                .build();
     }
 }
 

@@ -16,48 +16,33 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class InfectionManager {
-    private FTSPest plugin;
 
-    private HashMap<InfectionType, List<Infection>> infections;
+    private final HashMap<InfectionType, List<Infection>> infections;
 
-    private HashMap<String, Disease> diseases;
+    private final HashMap<String, Disease> diseases;
 
-    private ArrayList<Cure> cures;
+    private final ArrayList<Cure> cures;
 
-    private HashMap<Player, PestUser> users;
-
-    private LinkedList<Location> cauldrons;
+    private final HashMap<Player, PestUser> users;
 
     private static boolean loseImmunities = true;
 
-    public InfectionManager(FTSPest plugin) {
-        this.plugin = plugin;
-        this.infections = new HashMap<InfectionType, List<Infection>>();
-        this.cures = new ArrayList<Cure>();
-        this.diseases = new HashMap<String, Disease>();
-        this.users = new HashMap<Player, PestUser>();
-        this.cauldrons = new LinkedList<>();
-    }
-
-    public boolean addCauldron(Location location) {
-
-        if (location.getBlock().getType() == Material.CAULDRON) {
-            cauldrons.add(location);
-            return true;
-        }
-
-        return false;
+    public InfectionManager() {
+        this.infections = new HashMap<>();
+        this.cures = new ArrayList<>();
+        this.diseases = new HashMap<>();
+        this.users = new HashMap<>();
     }
 
     public void handleEvent(InfectionType infectionType, Player p, Object obj) {
 
         double hours = p.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000d;
 
-        if (hours < 50) {
+        if (hours < 30) {
             return;
         }
 
-        Disease disease = null;
+        Infection returnInfection = null;
         PestUser user = this.users.get(p);
         if (user == null || user.getDisease() != null)
             return;
@@ -67,12 +52,12 @@ public class InfectionManager {
         for (Infection infection : this.infections.get(infectionType)) {
             Infection.InfectReturnType returnType = infection.getsInfected(user, obj);
             if (returnType == Infection.InfectReturnType.INFECTED) {
-                disease = infection.getDisease();
+                returnInfection = infection;
                 break;
             }
         }
-        if (disease != null)
-            user.infectWith(disease);
+        if (returnInfection != null)
+            user.infectWith(returnInfection);
     }
 
     public void addInfection(Infection infection) {
@@ -82,7 +67,7 @@ public class InfectionManager {
             this.infections.put(infection.getType(), list);
             return;
         }
-        ((List<Infection>) this.infections.get(infection.getType())).add(infection);
+        this.infections.get(infection.getType()).add(infection);
     }
 
     public HashMap<Player, PestUser> getUsers() {
@@ -107,10 +92,6 @@ public class InfectionManager {
 
     public PestUser getUser(Player p) {
         return this.users.get(p);
-    }
-
-    public LinkedList<Location> getCauldrons() {
-        return cauldrons;
     }
 
     public static boolean toggleLosingImmunities() {

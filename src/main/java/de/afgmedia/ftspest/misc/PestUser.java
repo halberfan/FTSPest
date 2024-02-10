@@ -1,7 +1,9 @@
 package de.afgmedia.ftspest.misc;
 
 import de.afgmedia.ftspest.diseases.Disease;
+import de.afgmedia.ftspest.diseases.infections.Infection;
 import de.afgmedia.ftspest.diseases.infections.InfectionType;
+import de.afgmedia.ftspest.diseases.infections.PlayerInfection;
 import de.afgmedia.ftspest.main.FTSPest;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
@@ -10,41 +12,46 @@ import java.util.HashMap;
 
 public class PestUser {
 
-    private FTSPest plugin;
-
-    private Player player;
+    private final Player player;
 
     private Disease disease;
 
     private int sicknessLevel;
 
-    private HashMap<Disease, Double> immunity;
+    private final HashMap<Disease, Double> immunity;
 
-    public PestUser(FTSPest plugin, Player player, Disease disease, int sicknessLevel) {
+    public PestUser(Player player, Disease disease, int sicknessLevel) {
 
-        this.plugin = plugin;
         this.player = player;
         this.disease = disease;
         this.sicknessLevel = sicknessLevel;
-        this.immunity = new HashMap<Disease, Double>();
+        this.immunity = new HashMap<>();
 
-        plugin.getInfectionManager().getUsers().put(player, this);
+        FTSPest.getInstance().getInfectionManager().getUsers().put(player, this);
 
-
-        for (Disease value : plugin.getInfectionManager().getDiseases().values()) {
+        for (Disease value : FTSPest.getInstance().getInfectionManager().getDiseases().values()) {
             immunity.put(value, 0d);
         }
 
     }
 
-    public boolean infectWith(Disease disease) {
+    public void infectWith(Infection infection) {
         if (this.disease == null) {
+            Disease disease = infection.getDisease();
             this.disease = disease;
             this.sicknessLevel = 0;
-            this.player.sendMessage(Values.PREFIX + disease.getInfectionMessage());
-            return true;
+            if (infection.getType() == InfectionType.PLAYER) {
+                this.player.sendMessage(Values.PREFIX + "Du wurdest mit §c" + disease.getName() + " §7angesteckt.");
+            } else {
+                this.player.sendMessage(Values.PREFIX + disease.getInfectionMessage());
+            }
         }
-        return false;
+    }
+
+    public void forceInfect(Disease disease) {
+        this.disease = disease;
+        this.sicknessLevel = 0;
+        this.player.sendMessage(Values.PREFIX + disease.getInfectionMessage());
     }
 
     public void addSicknessLevel() {
@@ -62,7 +69,7 @@ public class PestUser {
 
     public void applySymptoms() {
         if (this.sicknessLevel >= 20 && this.sicknessLevel <= 50) {
-            if (Math.random() >= 0.925d)
+            if (Math.random() >= 0.95f)
                 if (this.disease.getLightSymptoms().equalsIgnoreCase("sweat")) {
                     Symptoms.sweat(this.player);
                 } else if (this.disease.getLightSymptoms().equalsIgnoreCase("cough")) {
@@ -76,7 +83,7 @@ public class PestUser {
             } else {
                 Symptoms.applyEffect(this.player, PotionEffectType.getByName(this.disease.getDebuff()), 0);
             }
-        } else if (this.sicknessLevel > 90 && Math.random() >= 0.2D && this.player.getHealth() > 3) {
+        } else if (this.sicknessLevel > 90 && Math.random() >= 0.2f && this.player.getHealth() > 3) {
             Symptoms.damage(this.player, Integer.parseInt(this.disease.getLethal()));
         }
     }
@@ -146,7 +153,7 @@ public class PestUser {
 
     public void resetImmunity() {
 
-        for (Disease value : plugin.getInfectionManager().getDiseases().values()) {
+        for (Disease value : FTSPest.getInstance().getInfectionManager().getDiseases().values()) {
             immunity.put(value, 0d);
         }
 

@@ -2,7 +2,9 @@ package de.afgmedia.ftspest.events;
 
 import de.afgmedia.ftspest.diseases.Cure;
 import de.afgmedia.ftspest.main.FTSPest;
+import de.afgmedia.ftspest.misc.Misc;
 import de.afgmedia.ftspest.misc.Values;
+import de.ftscraft.ftsutils.items.ItemReader;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -22,14 +24,25 @@ public class InteractListener implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_AIR &&
                 event.getPlayer().isSneaking()) {
             ItemStack is = event.getItem();
-            if (is.getType().isEdible())
+            if (is == null)
                 return;
             for (Cure cure : this.plugin.getInfectionManager().getCures()) {
-                if (cure.getCureItem().isSimilar(is))
-                    if (cure.cure(event.getPlayer())) {
-                        event.getPlayer().sendMessage(Values.MESSAGE_HEALED);
-                        event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
+                if (Misc.CHECK_SIGN()) {
+                    String sign;
+                    if ((sign = ItemReader.getSign(is)) != null && sign.equals("FTSPEST-" + cure.getName().toUpperCase())) {
+                        if (cure.cure(event.getPlayer())) {
+                            event.getPlayer().sendMessage(Values.MESSAGE_HEALED);
+                            event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
+                        }
                     }
+                } else {
+                    if (cure.getCureItem().getItemMeta().getDisplayName().equals(event.getItem().getItemMeta().getDisplayName())) {
+                        if (cure.cure(event.getPlayer())) {
+                            event.getPlayer().sendMessage(Values.MESSAGE_HEALED);
+                            event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
+                        }
+                    }
+                }
             }
         }
     }

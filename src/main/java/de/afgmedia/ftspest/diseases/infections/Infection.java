@@ -2,7 +2,6 @@ package de.afgmedia.ftspest.diseases.infections;
 
 import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.misc.PestUser;
-import org.bukkit.entity.Player;
 
 public interface Infection {
     InfectionType getType();

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import de.afgmedia.ftspest.misc.PestUser;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class MobAttackInfection implements Infection {
@@ -18,7 +17,7 @@ public class MobAttackInfection implements Infection {
 
     public MobAttackInfection(double chance) {
         this.chance = chance;
-        this.mobs = new ArrayList<EntityType>();
+        this.mobs = new ArrayList<>();
     }
 
     public InfectionType getType() {

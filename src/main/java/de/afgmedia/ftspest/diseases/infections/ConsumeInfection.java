@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import de.afgmedia.ftspest.misc.PestUser;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 public class ConsumeInfection implements Infection {

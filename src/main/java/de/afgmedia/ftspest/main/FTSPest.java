@@ -4,6 +4,7 @@ import de.afgmedia.ftspest.cmds.CMDpest;
 import de.afgmedia.ftspest.cmds.CMDpestadmin;
 import de.afgmedia.ftspest.events.*;
 import de.afgmedia.ftspest.misc.InfectionManager;
+import de.afgmedia.ftspest.misc.Misc;
 import de.afgmedia.ftspest.misc.PestIO;
 import de.afgmedia.ftspest.misc.PestRunner;
 import org.bukkit.Bukkit;
@@ -15,10 +16,15 @@ public class FTSPest extends JavaPlugin {
     private InfectionManager infectionManager;
 
     private PestIO pestIO;
+    private static FTSPest instance;
+
+    public static FTSPest getInstance() {
+        return instance;
+    }
 
     public void onEnable() {
-
-        this.infectionManager = new InfectionManager(this);
+        instance = this;
+        this.infectionManager = new InfectionManager();
         this.pestIO = new PestIO(this);
         loadConfigData();
 
@@ -36,11 +42,17 @@ public class FTSPest extends JavaPlugin {
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers())
             this.pestIO.loadPlayerData(onlinePlayer);
+
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new PestPlaceholderExpansion(this).register();
+        }
+
+        Misc.initRecipes();
+
     }
 
     public void onDisable() {
         this.pestIO.saveAllPlayerData();
-        this.pestIO.saveCauldrons();
         saveConfigData();
     }
 

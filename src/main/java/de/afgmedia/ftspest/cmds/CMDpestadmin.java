@@ -65,7 +65,7 @@ public class CMDpestadmin implements CommandExecutor {
                 }
 
                 PestUser tUser = plugin.getInfectionManager().getUser(target);
-                tUser.infectWith(targetDisease);
+                tUser.forceInfect(targetDisease);
                 target.sendPlainMessage(Values.PREFIX + "Ein Teamler hat dich angehustet!");
                 cs.sendPlainMessage(Values.PREFIX + "Du hast erfolgreich §c" + target.getName() + " §7mit §c" + targetDisease.getName() + " §7infiziert!");
 
@@ -78,7 +78,9 @@ public class CMDpestadmin implements CommandExecutor {
     }
 
     private String help() {
-        return "§7/pestadmin heal [Spieler] - Heilt einen Spieler\n" +
-               "§7/pestadmin infect [Spieler] [Krankheit] - Infiziert einen Spieler mit einer Krankheit";
+        return """
+                §7/pestadmin heal [Spieler] - Heilt einen Spieler
+                §7/pestadmin infect [Spieler] [Krankheit] - Infiziert einen Spieler mit einer Krankheit
+                §7/pestadmin toggleimmunities - Schalte um ob man nach dem Tod seine Immunitäten verliert""";
     }
 }

@@ -4,6 +4,7 @@ import de.afgmedia.ftspest.diseases.infections.InfectionType;
 import de.afgmedia.ftspest.main.FTSPest;
 
 import java.util.Iterator;
+import java.util.Random;
 
 public class PestRunner implements Runnable {
     private FTSPest plugin;
@@ -39,23 +40,28 @@ public class PestRunner implements Runnable {
                 PestUser user = pestUserIterator.next();
                 if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE) {
                     user.addSicknessLevel();
-                    if(!pestUserIterator.hasNext()) {
-                        sicknessLevel = 0;
-                    }
                 }
                 if (this.positionCheck >= SECONDS_TILL_POSITION_CHECK) {
-                    this.plugin.getInfectionManager().handleEvent(InfectionType.BIOME, user.getPlayer(), user.getPlayer().getLocation());
-                    if(!pestUserIterator.hasNext()) {
-                        positionCheck = 0;
+                    if (Math.random() < 0.5) {
+                        this.plugin.getInfectionManager().handleEvent(InfectionType.BIOME, user.getPlayer(), user.getPlayer().getLocation());
+                    } else {
+                        this.plugin.getInfectionManager().handleEvent(InfectionType.PLAYER, user.getPlayer(), user.getPlayer().getLocation());
                     }
                 }
                 if (this.symptomApply >= SECONDS_TILL_SYMPTOMS_APPLY) {
                     user.applySymptoms();
-                    if(!pestUserIterator.hasNext()) {
-                        symptomApply = 0;
-                    }
                 }
             }
+        }
+
+        if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE) {
+            sicknessLevel = 0;
+        }
+        if (this.positionCheck >= SECONDS_TILL_POSITION_CHECK) {
+            positionCheck = 0;
+        }
+        if (this.symptomApply >= SECONDS_TILL_SYMPTOMS_APPLY) {
+            symptomApply = 0;
         }
 
     }

@@ -5,14 +5,11 @@ import de.afgmedia.ftspest.diseases.Disease;
 import java.util.ArrayList;
 
 import de.afgmedia.ftspest.misc.PestUser;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public class DamageInfection implements Infection {
-    private ArrayList<EntityDamageEvent.DamageCause> damageCauses;
-
-    private double chance;
-
+    private final ArrayList<EntityDamageEvent.DamageCause> damageCauses;
+    private final double chance;
     private Disease disease;
 
     public DamageInfection(double chance) {

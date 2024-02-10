@@ -1,51 +1,48 @@
 package de.afgmedia.ftspest.misc;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import de.afgmedia.ftspest.main.FTSPest;
+import de.ftscraft.ftsutils.items.ItemBuilder;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.ShapedRecipe;
 
 public class Misc {
 
-    public static PestItemType isPestItem(ItemStack is) {
-
-        ItemMeta im = is.getItemMeta();
-
-        if(im.hasLore()) {
-
-            String lastComponent = im.getLore().get(im.getLore().size()-1);
-
-            System.out.println(lastComponent);
-            if(lastComponent.equalsIgnoreCase(Values.LORE_IDENTIFIER)) {
-                return getPestItemType(im);
-            }
-
-        }
-
-        return PestItemType.NOT_PEST_ITEM;
-
+    public static boolean CHECK_SIGN() {
+        return false;
     }
 
-    private static PestItemType getPestItemType(ItemMeta im) {
+    public static void initRecipes() {
 
-        switch (im.getDisplayName()) {
-            case Values.NAME_ITEM_VACCINE:
-                return PestItemType.VACCINE;
-            case Values.NAME_ITEM_SERUM:
-                return PestItemType.SERUM;
-            case Values.NAME_ITEM_SYRINGE:
-                return PestItemType.SYRINGE;
-            case Values.NAME_ITEM_SYRINGE_WITH_BLOOD:
-                return PestItemType.SYRINGE_WITH_BLOOD;
-            default:
-                return PestItemType.OTHER;
-        }
+        ItemStack syringe = new ItemBuilder(Material.TRIPWIRE_HOOK)
+                .name("§6Sprize")
+                .lore("§7Unbenutzt", "§7Kann einer Person blut abnehmen.")
+                .sign("FTSPEST-SYRINGE-EMPTY")
+                .build();
 
-    }
+        ShapedRecipe syringeRecipe = new ShapedRecipe(new NamespacedKey(FTSPest.getInstance(), "FTSPEST-SYRINGE"), syringe)
+                .shape("AAF", "AGA", "IAA")
+                .setIngredient('A', Material.AIR)
+                .setIngredient('F', Material.FLINT)
+                .setIngredient('G', Material.GLASS)
+                .setIngredient('I', Material.IRON_INGOT);
+        Bukkit.addRecipe(syringeRecipe);
 
-    public enum PestItemType {
-        SYRINGE, VACCINE, SERUM, OTHER, SYRINGE_WITH_BLOOD, NOT_PEST_ITEM
+        ItemStack serum = new ItemBuilder(Material.WATER_BUCKET)
+                .name("§6Serum")
+                .lore("§7Kann zusammen mit Blut zu einer Impfung werden")
+                .sign("FTSPEST-SERUM")
+                .build();
+
+        ShapedRecipe serumRecipe = new ShapedRecipe(new NamespacedKey(FTSPest.getInstance(), "FTSPEST-SERUM"), serum)
+                .shape("AAC", "ACA", "BAA")
+                .setIngredient('A', Material.AIR)
+                .setIngredient('C', Material.COAL)
+                .setIngredient('B', Material.BUCKET);
+        Bukkit.addRecipe(serumRecipe);
+
     }
 
 }

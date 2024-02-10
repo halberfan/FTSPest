@@ -4,7 +4,8 @@ import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.main.FTSPest;
 import de.afgmedia.ftspest.misc.PestUser;
 import de.afgmedia.ftspest.misc.Values;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,7 +38,7 @@ public class CMDpest implements CommandExecutor, TabCompleter {
 
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
         if (!(cs instanceof Player))
-            cs.sendMessage("Dieser Befehl ist nur für Spieler");
+            cs.sendPlainMessage("Dieser Befehl ist nur für Spieler");
         Player p = (Player) cs;
         if (args.length == 0) {
             sendFormattedDiseaseOverview(p, this.plugin.getInfectionManager().getUser(p));
@@ -51,7 +52,7 @@ public class CMDpest implements CommandExecutor, TabCompleter {
                 sendDiseaseList(p);
                 return true;
             } else if(args[0].equalsIgnoreCase("info")) {
-                p.sendMessage(Values.PREFIX + "Bitte gebe noch eine Krankheit an von der du Infos haben möchtest.");
+                p.sendPlainMessage(Values.PREFIX + "Bitte gebe noch eine Krankheit an von der du Infos haben möchtest.");
                 return true;
             }
         } else if (args.length == 2) {
@@ -61,7 +62,7 @@ public class CMDpest implements CommandExecutor, TabCompleter {
             }
         }
 
-        p.sendMessage(Values.PREFIX + "Unbekannter Befehl! Versuche /pest [List/Info/Immunity]");
+        p.sendPlainMessage(Values.PREFIX + "Unbekannter Befehl! Versuche /pest [List/Info/Immunity]");
 
         return false;
     }
@@ -75,64 +76,64 @@ public class CMDpest implements CommandExecutor, TabCompleter {
             return;
         }
 
-        p.sendMessage(Values.PREFIX + "Informationen zu " + ChatColor.YELLOW + disease.getName() + ChatColor.GRAY + ":");
-        p.sendMessage(Values.PREFIX + "Beschreibung: " + ChatColor.YELLOW + disease.getDescription());
-        p.sendMessage(Values.PREFIX + "Medizin: " + ChatColor.YELLOW + disease.getCure().getName()
+        p.sendMessage(Values.PREFIX + "Informationen zu " + "§e" + disease.getName() + "§7" + ":");
+        p.sendMessage(Values.PREFIX + "Beschreibung: " + "§e" + disease.getDescription());
+        p.sendMessage(Values.PREFIX + "Medizin: " + "§e" + disease.getCure().getName()
                 .replace("ue", "ü")
                 .replace("ss", "ß")
                 .replace("ae", "ä")
                 .replace("oe", "ö")
                 .replace("_", " "));
-        p.sendMessage(Values.PREFIX + "Symptome: " + ChatColor.YELLOW + disease.getDebuff().toLowerCase().replace("_", " "));
+        p.sendMessage(Values.PREFIX + "Symptome: " + "§e" + disease.getDebuff().toLowerCase().replace("_", " "));
 
     }
 
     private void sendDiseaseList(Player p) {
 
-        p.sendMessage(ChatColor.YELLOW + "---------------------------");
-        p.sendMessage(ChatColor.YELLOW + "Es gibt folgende Krankheiten: ");
-        p.sendMessage(" ");
+        p.sendPlainMessage("§e" + "---------------------------");
+        p.sendPlainMessage("§e" + "Es gibt folgende Krankheiten: ");
+        p.sendPlainMessage(" ");
 
         for (Disease disease : plugin.getInfectionManager().getDiseases().values()) {
-            p.sendMessage(ChatColor.YELLOW + disease.getName());
+            p.sendPlainMessage("§e" + disease.getName());
         }
 
-        p.sendMessage(" ");
-        p.sendMessage(ChatColor.YELLOW + "Für weitere Infos zu einer gewissen Krankheit gebe" + ChatColor.ITALIC + "/pest info [Krankheit]" + ChatColor.YELLOW + "in!");
-        p.sendMessage(ChatColor.YELLOW + "---------------------------");
+        p.sendPlainMessage(" ");
+        p.sendPlainMessage("§e" + "Für weitere Infos zu einer gewissen Krankheit gebe" + TextDecoration.ITALIC + "/pest info [Krankheit]" + "§e" + "in!");
+        p.sendPlainMessage("§e" + "---------------------------");
 
     }
 
     private void sendFormattedDiseaseOverview(Player p, PestUser user) {
-        p.sendMessage(ChatColor.YELLOW + "---------------------------");
-        p.sendMessage(ChatColor.YELLOW + "Krankheit: " + ChatColor.BOLD + ChatColor.AQUA + user.getDiseaseName());
-        p.sendMessage(ChatColor.YELLOW + "Fortschritt: " + ChatColor.BOLD + ChatColor.AQUA + user.getSicknessLevel());
+        p.sendPlainMessage("§e" + "---------------------------");
+        p.sendPlainMessage("§e" + "Krankheit: " + "§b" + user.getDiseaseName());
+        p.sendPlainMessage("§e" + "Fortschritt: " + "§b" + user.getSicknessLevel());
         if (user.isInfected())
-            p.sendMessage(ChatColor.YELLOW + "Medizin: " + ChatColor.BOLD + ChatColor.AQUA + user.getDisease().getCure().getName()
+            p.sendPlainMessage("§e" + "Medizin: " + "§b" + user.getDisease().getCure().getName()
                     .replace("ue", "ü")
                     .replace("ss", "ß")
                     .replace("ae", "ä")
                     .replace("oe", "ö")
                     .replace("_", " "));
-        p.sendMessage(ChatColor.YELLOW + "---------------------------");
+        p.sendPlainMessage("§e" + "---------------------------");
     }
 
     private void sendFormattedImmunityOverview(Player p, PestUser user) {
 
-        p.sendMessage(ChatColor.YELLOW + "---------------------------");
+        p.sendPlainMessage("§e" + "---------------------------");
 
-        p.sendMessage(ChatColor.GOLD + "Deine Immunitäten:");
+        p.sendPlainMessage("§6" + "Deine Immunitäten:");
 
         for (Disease disease : user.getImmunity().keySet()) {
             int percentage = (int) (user.getImmunity().get(disease) * 100);
             if (percentage == 80) {
-                p.sendMessage("" + ChatColor.YELLOW + disease.getName() + ": " + ChatColor.BOLD + ChatColor.AQUA + percentage + "% (MAX)");
+                p.sendPlainMessage("§e" + disease.getName() + ": " + "§b" + percentage + "% (MAX)");
                 continue;
             }
-            p.sendMessage(ChatColor.YELLOW + disease.getName() + ": " + ChatColor.BOLD + ChatColor.AQUA + percentage + "%");
+            p.sendPlainMessage("§e" + disease.getName() + ": " + "§b" + percentage + "%");
         }
 
-        p.sendMessage(ChatColor.YELLOW + "---------------------------");
+        p.sendPlainMessage("§e" + "---------------------------");
 
     }
 
@@ -142,9 +143,9 @@ public class CMDpest implements CommandExecutor, TabCompleter {
         ArrayList<String> result = new ArrayList<>();
 
         if (args.length == 1) {
-            for (int i = 0; i < arguments.size(); i++) {
-                if (arguments.get(i).toLowerCase().startsWith(args[0].toLowerCase()))
-                    result.add(arguments.get(i));
+            for (String argument : arguments) {
+                if (argument.toLowerCase().startsWith(args[0].toLowerCase()))
+                    result.add(argument);
             }
             return result;
         } else if (args.length == 2) {

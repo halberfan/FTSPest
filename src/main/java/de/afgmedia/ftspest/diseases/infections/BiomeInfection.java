@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import de.afgmedia.ftspest.misc.PestUser;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.Player;
 
 public class BiomeInfection implements Infection {
 
@@ -19,7 +18,7 @@ public class BiomeInfection implements Infection {
 
     public BiomeInfection(double chance) {
         this.chance = chance;
-        this.biomes = new ArrayList<Biome>();
+        this.biomes = new ArrayList<>();
     }
 
     public InfectionType getType() {

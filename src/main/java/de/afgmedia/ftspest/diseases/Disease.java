@@ -7,29 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Disease {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
-    private List<Infection> infections;
+    private final List<Infection> infections;
 
-    private String name;
+    private final String name;
 
-    private String description;
+    private final String description;
 
     private Cure cure;
 
-    private String infectionMessage;
+    private final String infectionMessage;
 
-    private boolean spreading;
+    private final boolean spreading;
 
-    private int spreadRadius;
+    private final int spreadRadius;
 
-    private double spreadChance;
+    private final double spreadChance;
 
-    private String lightSymptoms;
+    private final String lightSymptoms;
 
-    private String debuff;
+    private final String debuff;
 
-    private String lethal;
+    private final String lethal;
 
     public Disease(String name, String description, String infectionMessage, boolean spreading, int spreadRadius, double spreadChance, String lightSymptoms, String debuff, String lethal, FTSPest plugin) {
         this.name = name;
@@ -42,7 +42,7 @@ public class Disease {
         this.debuff = debuff;
         this.lightSymptoms = lightSymptoms;
         this.plugin = plugin;
-        this.infections = new ArrayList<Infection>();
+        this.infections = new ArrayList<>();
         plugin.getInfectionManager().getDiseases().put(name, this);
     }
 
