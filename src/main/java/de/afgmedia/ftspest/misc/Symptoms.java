@@ -1,6 +1,5 @@
 package de.afgmedia.ftspest.misc;
 
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;

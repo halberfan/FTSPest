@@ -8,6 +8,7 @@ import de.afgmedia.ftspest.main.FTSPest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -17,9 +18,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 public class PestIO {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
-    private File diseasesFolder;
+    private final File diseasesFolder;
 
     public PestIO(FTSPest plugin) {
         this.plugin = plugin;
@@ -124,7 +125,7 @@ public class PestIO {
         try {
             yamlConfiguration.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            plugin.getLogger().log(Level.WARNING, "Error while saving user file");
         }
     }
 

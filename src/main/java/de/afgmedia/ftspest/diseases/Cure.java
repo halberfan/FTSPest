@@ -3,15 +3,11 @@ package de.afgmedia.ftspest.diseases;
 import de.afgmedia.ftspest.main.FTSPest;
 import de.afgmedia.ftspest.misc.PestUser;
 
-import java.util.Arrays;
-
 import de.ftscraft.ftsutils.items.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
 
 public class Cure {
     private final FTSPest plugin;
@@ -82,7 +78,7 @@ public class Cure {
     }
 
     public boolean cure(Player player) {
-        PestUser user = (PestUser) this.plugin.getInfectionManager().getUsers().get(player);
+        PestUser user = this.plugin.getInfectionManager().getUsers().get(player);
         if (!user.isInfected())
             return false;
         if (user.getDisease().equals(this.disease)) {

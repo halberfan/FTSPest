@@ -14,8 +14,8 @@ public interface Infection {
 
     void setDisease(Disease paramDisease);
 
-    public enum InfectReturnType {
-        INFECTED, NOT_INFECTED, ERROR;
+    enum InfectReturnType {
+        INFECTED, NOT_INFECTED, ERROR
     }
 }
 

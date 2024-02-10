@@ -3,7 +3,6 @@ package de.afgmedia.ftspest.misc;
 import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.diseases.infections.Infection;
 import de.afgmedia.ftspest.diseases.infections.InfectionType;
-import de.afgmedia.ftspest.diseases.infections.PlayerInfection;
 import de.afgmedia.ftspest.main.FTSPest;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;

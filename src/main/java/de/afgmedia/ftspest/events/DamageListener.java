@@ -6,14 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.plugin.Plugin;
 
 public class DamageListener implements Listener {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public DamageListener(FTSPest plugin) {
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, (Plugin) plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

@@ -3,11 +3,8 @@ package de.afgmedia.ftspest.misc;
 import de.afgmedia.ftspest.diseases.infections.InfectionType;
 import de.afgmedia.ftspest.main.FTSPest;
 
-import java.util.Iterator;
-import java.util.Random;
-
 public class PestRunner implements Runnable {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     private static final int SECONDS_TILL_SICKNESS_LEVEL_RISE = 90;
 
@@ -35,9 +32,7 @@ public class PestRunner implements Runnable {
         this.positionCheck++;
         this.symptomApply++;
         if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE || this.positionCheck >= SECONDS_TILL_POSITION_CHECK || this.symptomApply >= SECONDS_TILL_SYMPTOMS_APPLY) {
-            Iterator<PestUser> pestUserIterator = this.plugin.getInfectionManager().getUsers().values().iterator();
-            while (pestUserIterator.hasNext()) {
-                PestUser user = pestUserIterator.next();
+            for (PestUser user : this.plugin.getInfectionManager().getUsers().values()) {
                 if (this.sicknessLevel >= SECONDS_TILL_SICKNESS_LEVEL_RISE) {
                     user.addSicknessLevel();
                 }

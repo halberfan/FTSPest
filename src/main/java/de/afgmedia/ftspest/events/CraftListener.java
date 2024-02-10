@@ -13,15 +13,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 public class CraftListener implements Listener {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public CraftListener(FTSPest plugin) {
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, (Plugin) plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

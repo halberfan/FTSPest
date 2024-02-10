@@ -10,7 +10,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class DeathListener implements Listener {
 
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public DeathListener(FTSPest plugin) {
         this.plugin = plugin;

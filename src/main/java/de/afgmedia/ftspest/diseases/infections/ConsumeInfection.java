@@ -9,11 +9,11 @@ import org.bukkit.Material;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 public class ConsumeInfection implements Infection {
-    private ArrayList<Material> consumables;
+    private final ArrayList<Material> consumables;
 
     private Disease disease;
 
-    private double chance;
+    private final double chance;
 
     public ConsumeInfection(double chance) {
         this.chance = chance;
@@ -33,8 +33,7 @@ public class ConsumeInfection implements Infection {
     }
 
     public Infection.InfectReturnType getsInfected(PestUser u, Object obj) {
-        if (obj instanceof PlayerItemConsumeEvent) {
-            PlayerItemConsumeEvent e = (PlayerItemConsumeEvent) obj;
+        if (obj instanceof PlayerItemConsumeEvent e) {
             if (this.consumables.contains(e.getItem().getType())) {
                 double rdm = Math.random();
                 double chanceWithImmunity = chance * (1 - u.getImmunity().get(disease));

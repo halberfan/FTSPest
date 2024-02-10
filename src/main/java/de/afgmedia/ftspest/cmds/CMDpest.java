@@ -4,7 +4,6 @@ import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.main.FTSPest;
 import de.afgmedia.ftspest.misc.PestUser;
 import de.afgmedia.ftspest.misc.Values;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -21,8 +20,8 @@ import java.util.List;
 public class CMDpest implements CommandExecutor, TabCompleter {
     private final FTSPest plugin;
 
-    ArrayList<String> arguments;
-    ArrayList<String> diseases;
+    final ArrayList<String> arguments;
+    final ArrayList<String> diseases;
 
     public CMDpest(FTSPest plugin) {
         this.plugin = plugin;
@@ -37,9 +36,10 @@ public class CMDpest implements CommandExecutor, TabCompleter {
     }
 
     public boolean onCommand(@NotNull CommandSender cs, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
-        if (!(cs instanceof Player))
+        if (!(cs instanceof Player p)) {
             cs.sendPlainMessage("Dieser Befehl ist nur für Spieler");
-        Player p = (Player) cs;
+            return true;
+        }
         if (args.length == 0) {
             sendFormattedDiseaseOverview(p, this.plugin.getInfectionManager().getUser(p));
             return true;

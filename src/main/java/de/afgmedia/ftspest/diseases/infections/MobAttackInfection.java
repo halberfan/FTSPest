@@ -9,11 +9,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class MobAttackInfection implements Infection {
-    private double chance;
+    private final double chance;
 
     private Disease disease;
 
-    private ArrayList<EntityType> mobs;
+    private final ArrayList<EntityType> mobs;
 
     public MobAttackInfection(double chance) {
         this.chance = chance;
@@ -29,8 +29,7 @@ public class MobAttackInfection implements Infection {
     }
 
     public Infection.InfectReturnType getsInfected(PestUser u, Object obj) {
-        if (obj instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent e = (EntityDamageByEntityEvent) obj;
+        if (obj instanceof EntityDamageByEntityEvent e) {
             if (this.mobs.contains(e.getDamager().getType())) {
                 double rdm = Math.random();
                 double chanceWithImmunity = chance * (1 - u.getImmunity().get(disease));

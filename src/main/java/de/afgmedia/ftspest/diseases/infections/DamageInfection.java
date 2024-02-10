@@ -26,8 +26,7 @@ public class DamageInfection implements Infection {
     }
 
     public Infection.InfectReturnType getsInfected(PestUser u, Object obj) {
-        if (obj instanceof EntityDamageEvent) {
-            EntityDamageEvent e = (EntityDamageEvent) obj;
+        if (obj instanceof EntityDamageEvent e) {
             if (this.damageCauses.contains(e.getCause())) {
                 if(e.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
                     if(e.getDamage() < 4)

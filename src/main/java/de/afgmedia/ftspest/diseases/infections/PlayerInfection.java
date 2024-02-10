@@ -7,13 +7,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
 public class PlayerInfection implements Infection {
 
-    private double chance;
+    private final double chance;
     private Disease disease;
-    private int radius;
+    private final int radius;
 
     public PlayerInfection(double chance, int radius) {
         this.chance = chance;

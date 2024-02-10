@@ -3,13 +3,8 @@ package de.afgmedia.ftspest.diseases;
 import de.afgmedia.ftspest.diseases.infections.Infection;
 import de.afgmedia.ftspest.main.FTSPest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Disease {
     private final FTSPest plugin;
-
-    private final List<Infection> infections;
 
     private final String name;
 
@@ -42,13 +37,11 @@ public class Disease {
         this.debuff = debuff;
         this.lightSymptoms = lightSymptoms;
         this.plugin = plugin;
-        this.infections = new ArrayList<>();
         plugin.getInfectionManager().getDiseases().put(name, this);
     }
 
     public void addInfection(Infection infection) {
         if (infection != null) {
-            this.infections.add(infection);
             this.plugin.getInfectionManager().addInfection(infection);
             infection.setDisease(this);
         }

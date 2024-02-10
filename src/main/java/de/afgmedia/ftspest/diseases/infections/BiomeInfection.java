@@ -10,11 +10,11 @@ import org.bukkit.block.Biome;
 
 public class BiomeInfection implements Infection {
 
-    private ArrayList<Biome> biomes;
+    private final ArrayList<Biome> biomes;
 
     private Disease disease;
 
-    private double chance;
+    private final double chance;
 
     public BiomeInfection(double chance) {
         this.chance = chance;
@@ -30,8 +30,7 @@ public class BiomeInfection implements Infection {
     }
 
     public Infection.InfectReturnType getsInfected(PestUser u, Object obj) {
-        if (obj instanceof Location) {
-            Location loc = (Location) obj;
+        if (obj instanceof Location loc) {
             if (this.biomes.contains(loc.getBlock().getBiome())) {
                 double rdm = Math.random();
                 double chanceWithImmunity = chance * (1 - u.getImmunity().get(disease));

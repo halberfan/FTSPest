@@ -4,15 +4,11 @@ import de.afgmedia.ftspest.diseases.Cure;
 import de.afgmedia.ftspest.diseases.Disease;
 import de.afgmedia.ftspest.diseases.infections.Infection;
 import de.afgmedia.ftspest.diseases.infections.InfectionType;
-import de.afgmedia.ftspest.main.FTSPest;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 public class InfectionManager {

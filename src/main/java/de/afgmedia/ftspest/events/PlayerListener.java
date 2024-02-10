@@ -13,16 +13,15 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.logging.Level;
 
 public class PlayerListener implements Listener {
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public PlayerListener(FTSPest plugin) {
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, (Plugin) plugin);
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler

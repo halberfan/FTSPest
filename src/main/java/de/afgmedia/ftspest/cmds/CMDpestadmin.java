@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CMDpestadmin implements CommandExecutor {
 
-    private FTSPest plugin;
+    private final FTSPest plugin;
 
     public CMDpestadmin(FTSPest plugin) {
         this.plugin = plugin;
